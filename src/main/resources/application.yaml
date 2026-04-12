@@ -5,20 +5,36 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: identity-service
+          uri: http://localhost:8084
+          predicates:
+              - Path=/auth/**
+
         - id: catalog-service
           uri: http://localhost:8081
           predicates:
             - Path=/books/**
+          filters:
+            - AuthenticationFilter
 
         - id: order-service
           uri: http://localhost:8082
           predicates:
             - Path=/orders/**
+          filters:
+              - AuthenticationFilter
 
         - id: payment-service
           uri: http://localhost:8083
           predicates:
             - Path=/payments/**
+          filters:
+            - AuthenticationFilter
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:dd2e2add61a0cce0eb2bfb9c2d812515}
