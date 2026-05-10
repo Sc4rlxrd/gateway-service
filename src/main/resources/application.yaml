@@ -38,3 +38,20 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:dd2e2add61a0cce0eb2bfb9c2d812515}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+tracing:
+  sampling:
+    probability: 1.0
