@@ -8,7 +8,7 @@ spring:
         - id: identity-service
           uri: http://localhost:8084
           predicates:
-              - Path=/auth/**
+            - Path=/auth/**
 
         - id: catalog-service
           uri: http://localhost:8081
@@ -22,7 +22,7 @@ spring:
           predicates:
             - Path=/orders/**
           filters:
-              - AuthenticationFilter
+            - AuthenticationFilter
 
         - id: payment-service
           uri: http://localhost:8083
@@ -30,6 +30,35 @@ spring:
             - Path=/payments/**
           filters:
             - AuthenticationFilter
+
+        - id: identity-service-openapi
+          uri: http://localhost:8084
+          predicates:
+            - Path=/identity-service/v3/api-docs
+          filters:
+            - RewritePath=/identity-service/(?<segment>.*), /$\1
+
+        - id: catalog-service-openapi
+          uri: http://localhost:8081
+          predicates:
+            - Path=/catalog-service/v3/api-docs
+          filters:
+            - RewritePath=/catalog-service/(?<segment>.*), /$\1
+
+        - id: order-service-openapi
+          uri: http://localhost:8082
+          predicates:
+            - Path=/order-service/v3/api-docs
+          filters:
+            - RewritePath=/order-service/(?<segment>.*), /$\1
+
+        - id: payment-service-openapi
+          uri: http://localhost:8083
+          predicates:
+            - Path=/payment-service/v3/api-docs
+          filters:
+            - RewritePath=/payment-service/(?<segment>.*), /$\1
+
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
@@ -38,7 +67,6 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:dd2e2add61a0cce0eb2bfb9c2d812515}
-
 
 management:
   endpoints:
@@ -55,3 +83,21 @@ management:
 tracing:
   sampling:
     probability: 1.0
+
+zipkin:
+  tracing:
+    endpoint: "http://localhost:9411/api/v2/spans"
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    urls:
+      - name: Identity Service
+        url: /identity-service/v3/api-docs
+      - name: Catalog Service
+        url: /catalog-service/v3/api-docs
+      - name: Order Service
+        url: /order-service/v3/api-docs
+      - name: Payment Service
+        url: /payment-service/v3/api-docs
