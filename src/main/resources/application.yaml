@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: gateway-service
   cloud:
     gateway:
       routes:
@@ -9,59 +11,48 @@ spring:
           uri: http://localhost:8084
           predicates:
             - Path=/auth/**
-
         - id: catalog-service
           uri: http://localhost:8081
           predicates:
             - Path=/books/**
           filters:
             - AuthenticationFilter
-
         - id: order-service
           uri: http://localhost:8082
           predicates:
             - Path=/orders/**
           filters:
             - AuthenticationFilter
-
         - id: payment-service
           uri: http://localhost:8083
           predicates:
             - Path=/payments/**
           filters:
             - AuthenticationFilter
-
         - id: identity-service-openapi
           uri: http://localhost:8084
           predicates:
             - Path=/identity-service/v3/api-docs
           filters:
             - RewritePath=/identity-service/(?<segment>.*), /$\1
-
         - id: catalog-service-openapi
           uri: http://localhost:8081
           predicates:
             - Path=/catalog-service/v3/api-docs
           filters:
             - RewritePath=/catalog-service/(?<segment>.*), /$\1
-
         - id: order-service-openapi
           uri: http://localhost:8082
           predicates:
             - Path=/order-service/v3/api-docs
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\1
-
         - id: payment-service-openapi
           uri: http://localhost:8083
           predicates:
             - Path=/payment-service/v3/api-docs
           filters:
             - RewritePath=/payment-service/(?<segment>.*), /$\1
-
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
 
 api:
   security:
@@ -79,14 +70,16 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
-
-tracing:
-  sampling:
-    probability: 1.0
-
-zipkin:
   tracing:
-    endpoint: "http://localhost:9411/api/v2/spans"
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
 
 springdoc:
   api-docs:
