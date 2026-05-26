@@ -53,6 +53,12 @@ spring:
             - Path=/payment-service/v3/api-docs
           filters:
             - RewritePath=/payment-service/(?<segment>.*), /$\1
+        - id: notification-service-openapi
+          uri: http://localhost:8085
+          predicates:
+            - Path=/notification-service/v3/api-docs
+          filters:
+            - RewritePath=/notification-service/(?<segment>.*), /$\1
 
 api:
   security:
@@ -94,3 +100,5 @@ springdoc:
         url: /order-service/v3/api-docs
       - name: Payment Service
         url: /payment-service/v3/api-docs
+      - name: Notification Service
+        url: /notification-service/v3/api-docs
