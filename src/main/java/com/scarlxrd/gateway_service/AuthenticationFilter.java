@@ -46,11 +46,13 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             //  Passa info do usuário para os microserviços via Header
             var rolesList = decoded.getClaim("roles").asList(String.class);
+            String userId = decoded.getClaim("userId").asString();
             String rolesString = (rolesList != null) ? String.join(",", rolesList) : "";
 
             var modifiedRequest = request.mutate()
                     .header("X-User-Email", decoded.getSubject())
                     .header("X-User-Roles", rolesString) // Ex: "USER,ADMIN"
+                    .header("X-User-Id", userId)
                     .build();
 
             return chain.filter(exchange.mutate().request(modifiedRequest).build());
