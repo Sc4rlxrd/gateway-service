@@ -23,12 +23,6 @@ spring:
             - Path=/orders/**
           filters:
             - AuthenticationFilter
-        - id: payment-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/payments/**
-          filters:
-            - AuthenticationFilter
         - id: identity-service-openapi
           uri: http://localhost:8084
           predicates:
