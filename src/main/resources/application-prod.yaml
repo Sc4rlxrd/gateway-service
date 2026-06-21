@@ -1,0 +1,26 @@
+services:
+  identity:
+    url: ${IDENTITY_SERVICE_URL}
+
+  catalog:
+    url: ${CATALOG_SERVICE_URL}
+
+  order:
+    url: ${ORDER_SERVICE_URL}
+
+  payment:
+    url: ${PAYMENT_SERVICE_URL}
+
+  notification:
+    url: ${NOTIFICATION_SERVICE_URL}
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+
+management:
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT}
+

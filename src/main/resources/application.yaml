@@ -4,92 +4,103 @@ server:
 spring:
   application:
     name: gateway-service
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
   cloud:
     gateway:
       routes:
         - id: identity-service
-          uri: http://localhost:8084
+          uri: ${services.identity.url}
           predicates:
             - Path=/auth/**
+
         - id: catalog-service
-          uri: http://localhost:8081
+          uri: ${services.catalog.url}
           predicates:
             - Path=/books/**
           filters:
             - AuthenticationFilter
+
         - id: order-service
-          uri: http://localhost:8082
+          uri: ${services.order.url}
           predicates:
             - Path=/orders/**
           filters:
             - AuthenticationFilter
+
         - id: identity-service-openapi
-          uri: http://localhost:8084
+          uri: ${services.identity.url}
           predicates:
             - Path=/identity-service/v3/api-docs
           filters:
             - RewritePath=/identity-service/(?<segment>.*), /$\1
+
         - id: catalog-service-openapi
-          uri: http://localhost:8081
+          uri: ${services.catalog.url}
           predicates:
             - Path=/catalog-service/v3/api-docs
           filters:
             - RewritePath=/catalog-service/(?<segment>.*), /$\1
+
         - id: order-service-openapi
-          uri: http://localhost:8082
+          uri: ${services.order.url}
           predicates:
             - Path=/order-service/v3/api-docs
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\1
+
         - id: payment-service-openapi
-          uri: http://localhost:8083
+          uri: ${services.payment.url}
           predicates:
             - Path=/payment-service/v3/api-docs
           filters:
             - RewritePath=/payment-service/(?<segment>.*), /$\1
+
         - id: notification-service-openapi
-          uri: http://localhost:8085
+          uri: ${services.notification.url}
           predicates:
             - Path=/notification-service/v3/api-docs
           filters:
             - RewritePath=/notification-service/(?<segment>.*), /$\1
-
-api:
-  security:
-    token:
-      secret: ${JWT_SECRET:dd2e2add61a0cce0eb2bfb9c2d812515}
 
 management:
   endpoints:
     web:
       exposure:
         include: health, info, prometheus, metrics
+
   endpoint:
     health:
       show-details: always
+
   metrics:
     tags:
       application: ${spring.application.name}
+
   tracing:
     sampling:
       probability: 1.0
-  zipkin:
-    tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
-
 
 springdoc:
   api-docs:
     enabled: true
+
   swagger-ui:
     urls:
       - name: Identity Service
         url: /identity-service/v3/api-docs
+
       - name: Catalog Service
         url: /catalog-service/v3/api-docs
+
       - name: Order Service
         url: /order-service/v3/api-docs
+
       - name: Payment Service
         url: /payment-service/v3/api-docs
+
       - name: Notification Service
         url: /notification-service/v3/api-docs
+

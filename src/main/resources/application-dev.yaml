@@ -1,0 +1,26 @@
+services:
+  identity:
+    url: http://localhost:8084
+
+  catalog:
+    url: http://localhost:8081
+
+  order:
+    url: http://localhost:8082
+
+  payment:
+    url: http://localhost:8083
+
+  notification:
+    url: http://localhost:8085
+
+api:
+  security:
+    token:
+      secret: dd2e2add61a0cce0eb2bfb9c2d812515
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
