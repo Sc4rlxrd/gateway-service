@@ -1,0 +1,39 @@
+# Resultado de builds locais
+target/
+
+# Repositório Git
+.git/
+.github/
+.gitignore
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# Arquivos locais e segredos
+.env
+.env.*
+*.log
+
+# Docker Compose específico do serviço
+docker-compose.yml
+docker-compose.yaml
+docker-compose.*.yml
+docker-compose.*.yaml
+docker/
+
+# Documentação
+README.md
+AGENTS.md
+docs/
+
+# Maven Wrapper do Windows
+mvnw.cmd
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
